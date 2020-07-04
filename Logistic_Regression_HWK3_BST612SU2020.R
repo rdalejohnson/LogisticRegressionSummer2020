@@ -39,17 +39,41 @@ str(obesitySleep)
 
 by(obesitySleep[,c(2,4,5,6,11)], obesitySleep$Obese, summary)
 
-
 summary(obesitySleep[,c(2,4,5,6,11)])
+lapply(obesitySleep[,c(2,6)], sd, na.rm=TRUE)
+lapply(obesitySleep[,c(2,6)], mean, na.rm=TRUE)
+lapply(obesitySleep[,c(2,6)], IQR, na.rm=TRUE)
 
 
 lapply(obesitySleep[,c(2,6)], sd, na.rm=TRUE)
 
-lapply(obesitySleep[,c(2,6)], IQR, na.rm=TRUE)
 
 coefficient.of.variation.age <- sd(obesitySleep$Age, na.rm=TRUE) / mean(obesitySleep$Age, na.rm=TRUE)
+#NORMALITY TESTS ON AGE
 hist(obesitySleep$Age)
 age.boxplot <- boxplot(obesitySleep$Age)
+shapiro.test(obesitySleep$Age)
+qqnorm(obesitySleep$Age)
+qqline(obesitySleep$Age)
+
+#SD on AGE when Obese = NOT OBESE
+with(obesitySleep, sd(Age[Obese=='Not Obese']))
+
+#SD on AGE when Obese =  OBESE
+with(obesitySleep, sd(Age[Obese=='Obese']))
+
+#MODE OF AGE when Obese = NOT OBESE
+tab <- table(obesitySleep$Age[obesitySleep$Obese=='Not Obese'])   # number of occurrences for each unique value
+sort(tab, decreasing = TRUE) # sort highest to lowest
+
+#MODE OF AGE when Obese = OBESE
+tab <- table(obesitySleep$Age[obesitySleep$Obese=='Obese'])   # number of occurrences for each unique value
+sort(tab, decreasing = TRUE) # sort highest to lowest
+
+#MODE OF AGE
+tab <- table(obesitySleep$Age) # number of occurrences for each unique value
+sort(tab, decreasing = TRUE) # sort highest to lowest
+
 
 
 coefficient.of.variation.sleepduration <- sd(obesitySleep$SLEEP.DURATION, na.rm=TRUE) / mean(obesitySleep$SLEEP.DURATION, na.rm=TRUE)
@@ -65,15 +89,9 @@ qqnorm(obesitySleep$SLEEP.DURATION)
 # Draw the reference line:
 qqline(obesitySleep$SLEEP.DURATION)
 
-age.boxplot <- ggplot(obesitySleep) +
-  aes(x = Obese, y = Age) +
-  geom_boxplot()
 
-age.boxplot
 
-qqnorm(obesitySleep$Age)
-# Draw the reference line:
-qqline(obesitySleep$Age)
+
 
 
 
