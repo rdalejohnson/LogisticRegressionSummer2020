@@ -1,3 +1,5 @@
+library(ggplot2)
+
 obesitySleep <- read.table("Obesity_Sleep.csv", sep=",", header=T)
 
 ##### Descriptive Stats for entire data set/sample
@@ -34,8 +36,44 @@ frequencyDistribution= function(dataSet, ascending=F)
 
 
 str(obesitySleep)
+
 by(obesitySleep[,c(2,4,5,6,11)], obesitySleep$Obese, summary)
+
+
 summary(obesitySleep[,c(2,4,5,6,11)])
+
+
+lapply(obesitySleep[,c(2,6)], sd, na.rm=TRUE)
+
+lapply(obesitySleep[,c(2,6)], IQR, na.rm=TRUE)
+
+coefficient.of.variation.age <- sd(obesitySleep$Age, na.rm=TRUE) / mean(obesitySleep$Age, na.rm=TRUE)
+hist(obesitySleep$Age)
+age.boxplot <- boxplot(obesitySleep$Age)
+
+
+coefficient.of.variation.sleepduration <- sd(obesitySleep$SLEEP.DURATION, na.rm=TRUE) / mean(obesitySleep$SLEEP.DURATION, na.rm=TRUE)
+hist(obesitySleep$SLEEP.DURATION)
+
+sleepdur.boxplot <- ggplot(obesitySleep) +
+  aes(x = Obese, y = SLEEP.DURATION) +
+  geom_boxplot()
+
+sleepdur.boxplot
+
+qqnorm(obesitySleep$SLEEP.DURATION)
+# Draw the reference line:
+qqline(obesitySleep$SLEEP.DURATION)
+
+age.boxplot <- ggplot(obesitySleep) +
+  aes(x = Obese, y = Age) +
+  geom_boxplot()
+
+age.boxplot
+
+qqnorm(obesitySleep$Age)
+# Draw the reference line:
+qqline(obesitySleep$Age)
 
 
 
