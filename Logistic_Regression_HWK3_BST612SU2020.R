@@ -32,12 +32,13 @@ frequencyDistribution= function(dataSet, ascending=F)
   
 }
 
-frequencyDistribution(obesitySleep$Age)
-frequencyDistribution(obesitySleep$Sex)
-frequencyDistribution(obesitySleep$Race)
-frequencyDistribution(obesitySleep$SLEEP.DURATION)
 
-summary(obesitySleep$BMI)
+str(obesitySleep)
+by(obesitySleep[,c(2,4,5,6,11)], obesitySleep$Obese, summary)
+summary(obesitySleep[,c(2,4,5,6,11)])
+
+
+
 
 
 
