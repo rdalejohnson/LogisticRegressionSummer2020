@@ -37,18 +37,23 @@ frequencyDistribution= function(dataSet, ascending=F)
 
 str(obesitySleep)
 
-by(obesitySleep[,c(2,4,5,6,11)], obesitySleep$Obese, summary)
-
-summary(obesitySleep[,c(2,4,5,6,11)])
-lapply(obesitySleep[,c(2,6)], sd, na.rm=TRUE)
-lapply(obesitySleep[,c(2,6)], mean, na.rm=TRUE)
-lapply(obesitySleep[,c(2,6)], IQR, na.rm=TRUE)
+############################################ AGE ###############################
+############################################ AGE ###############################
+############################################ AGE ###############################
+############################################ AGE ###############################
 
 
-lapply(obesitySleep[,c(2,6)], sd, na.rm=TRUE)
+###### AGE ALONE ######## AGE ALONE ##############  AGE ALONE ##############
 
+summary(obesitySleep[,c(2)])
+sd(obesitySleep$Age)
 
-coefficient.of.variation.age <- sd(obesitySleep$Age, na.rm=TRUE) / mean(obesitySleep$Age, na.rm=TRUE)
+#MODE OF AGE
+tab <- table(obesitySleep$Age) # number of occurrences for each unique value
+sort(tab, decreasing = TRUE) # sort highest to lowest
+
+#Coefficient of Variation
+sd(obesitySleep$Age, na.rm=TRUE) / mean(obesitySleep$Age, na.rm=TRUE)
 #NORMALITY TESTS ON AGE
 hist(obesitySleep$Age)
 age.boxplot <- boxplot(obesitySleep$Age)
@@ -56,11 +61,11 @@ shapiro.test(obesitySleep$Age)
 qqnorm(obesitySleep$Age)
 qqline(obesitySleep$Age)
 
-#SD on AGE when Obese = NOT OBESE
-with(obesitySleep, sd(Age[Obese=='Not Obese']))
+##### AGE BY OBESE CATEGORY #########
+by(obesitySleep[,c(2)], obesitySleep$Obese, summary)
+# NUMBER OF AGE VALUES BY OBESE CATEGORY ###
+by(obesitySleep[,c(2)], obesitySleep$Obese, length)
 
-#SD on AGE when Obese =  OBESE
-with(obesitySleep, sd(Age[Obese=='Obese']))
 
 #MODE OF AGE when Obese = NOT OBESE
 tab <- table(obesitySleep$Age[obesitySleep$Obese=='Not Obese'])   # number of occurrences for each unique value
@@ -70,9 +75,89 @@ sort(tab, decreasing = TRUE) # sort highest to lowest
 tab <- table(obesitySleep$Age[obesitySleep$Obese=='Obese'])   # number of occurrences for each unique value
 sort(tab, decreasing = TRUE) # sort highest to lowest
 
+
+#SD/MEAN on AGE when Obese = NOT OBESE
+with(obesitySleep, sd(Age[Obese=='Not Obese']))
+with(obesitySleep, mean(Age[Obese=='Not Obese']))
+
+
+#SD/MEAN on AGE when Obese =  OBESE
+with(obesitySleep, sd(Age[Obese=='Obese']))
+with(obesitySleep, mean(Age[Obese=='Obese']))
+
+
+############################################ RACE ###############################
+############################################ RACE ###############################
+############################################ RACE ###############################
+############################################ RACE ###############################
+
+summary(obesitySleep[,c(4)])
+prop.table(table(obesitySleep$Race))
+
+by(obesitySleep[,c(4)], obesitySleep$Obese, summary)
+
+
+raceTab <- table(obesitySleep$Race[obesitySleep$Obese=='Obese'])   
+cbind(raceTab, prop.table(raceTab))
+
+raceTab2 <- table(obesitySleep$Race[obesitySleep$Obese=='Not Obese']) 
+cbind(raceTab2, prop.table(raceTab2))
+
+
+
+
+############################################ SLEEP QUALITY ###############################
+############################################ SLEEP QUALITY ###############################
+############################################ SLEEP QUALITY ###############################
+############################################ SLEEP QUALITY ###############################
+
+
+summary(obesitySleep[,c(5)])
+prop.table(table(obesitySleep$SLEEP.QUALITY.RATING))
+by(obesitySleep[,c(5)], obesitySleep$SLEEP.QUALITY.RATING, summary)
+
+
+sleepTab <- table(obesitySleep$SLEEP.QUALITY.RATING[obesitySleep$Obese=='Obese'])   
+cbind(sleepTab, prop.table(sleepTab))
+
+sleepTab2 <- table(obesitySleep$SLEEP.QUALITY.RATING[obesitySleep$Obese=='Not Obese']) 
+cbind(sleepTab2, prop.table(sleepTab2))
+
+
+
+
+
+
+
+by(obesitySleep[,c(2,4,5,6,11)], obesitySleep$Obese, summary)
+
+
+summary(obesitySleep[,c(2,4,5,6,11)])
+
+lapply(obesitySleep[,c(2,6)], sd, na.rm=TRUE)
+
+lapply(obesitySleep[,c(2,6)], mean, na.rm=TRUE)
+lapply(obesitySleep[,c(2,6)], IQR, na.rm=TRUE)
+
+
+lapply(obesitySleep[,c(2,6)], sd, na.rm=TRUE)
+
+
+# coefficient.of.variation.age <- sd(obesitySleep$Age, na.rm=TRUE) / mean(obesitySleep$Age, na.rm=TRUE)
+# #NORMALITY TESTS ON AGE
+# hist(obesitySleep$Age)
+# age.boxplot <- boxplot(obesitySleep$Age)
+# shapiro.test(obesitySleep$Age)
+# qqnorm(obesitySleep$Age)
+# qqline(obesitySleep$Age)
+
+
+
+
+
 #MODE OF AGE
-tab <- table(obesitySleep$Age) # number of occurrences for each unique value
-sort(tab, decreasing = TRUE) # sort highest to lowest
+# tab <- table(obesitySleep$Age) # number of occurrences for each unique value
+# sort(tab, decreasing = TRUE) # sort highest to lowest
 
 
 
