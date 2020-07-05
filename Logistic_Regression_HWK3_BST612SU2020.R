@@ -219,31 +219,121 @@ chisq.test(table(obesitySleep$Obese, obesitySleep$Race))
 
 ############ OBESITY BY SLEEP QUALITY ########################### OBESITY BY SLEEP QUALITY ###################
 
-with(obesitySleep, CrossTable(Obese, SLEEP.QUALITY.RATING))
+with(obesitySleep, CrossTable(Obese, Bad))
+chisq.test(table(obesitySleep$Obese, obesitySleep$Bad))
 
-chisq.test(table(obesitySleep$Obese, obesitySleep$SLEEP.QUALITY.RATING))
+with(obesitySleep, CrossTable(Obese, Good))
+chisq.test(table(obesitySleep$Obese, obesitySleep$Good))
 
-
+with(obesitySleep, CrossTable(Obese, OK))
+chisq.test(table(obesitySleep$Obese, obesitySleep$OK))
 
 ####### AGE BY RACE #########
 
+Race=obesitySleep$Race
+Age=obesitySleep$Age
+
+t.test(Age~Race)
+
 
 ####### AGE BY SLEEP QUALITY ########
+
+#sleepQualityBad=obesitySleep$Bad
+#Age=obesitySleep$Age
+
+anova.sleepqualbad.age <- aov(Age ~ Bad, data = obesitySleep)
+summary(anova.sleepqualbad.age)
+plot(anova.sleepqualbad.age, 1)
+
+anova.sleepqualgood.age <- aov(Age ~ Good, data = obesitySleep)
+summary(anova.sleepqualgood.age)
+plot(anova.sleepqualgood.age, 1)
+
+anova.sleepqualok.age <- aov(Age ~ OK, data = obesitySleep)
+summary(anova.sleepqualok.age)
+plot(anova.sleepqualok.age, 1)
+
+library(car)
+leveneTest(Age ~ Bad, data = obesitySleep)
+
+leveneTest(Age ~ Good, data = obesitySleep)
+
+leveneTest(Age ~ OK, data = obesitySleep)
+
+
+
 
 
 #### AGE BY SLEEP DURATION ########
 
 
+scatterplot(SLEEP.DURATION ~ Age, data = obesitySleep)
+plot(x=obesitySleep$Age,y=obesitySleep$SLEEP.DURATION)
+Hmisc::rcorr(x=obesitySleep$Age,y=obesitySleep$SLEEP.DURATION, type=c("spearman"))
+Hmisc::rcorr(x=obesitySleep$SLEEP.DURATION,y=obesitySleep$Age, type=c("spearman"))
+
+Hmisc::rcorr(x=obesitySleep$Age,y=obesitySleep$SLEEP.DURATION, type=c("pearson"))
+
+#complete.obs means only complete rows, ignore NA values
+cor(obesitySleep$Age, obesitySleep$SLEEP.DURATION, use = "complete.obs", method = "pearson")
+
+cor.test(obesitySleep$Age, obesitySleep$SLEEP.DURATION)
+
+library(rms)
+library(ggpubr)
+
+
+ggs = ggscatter(obesitySleep, x = "Age", y = "SLEEP.DURATION", 
+                add = "reg.line", conf.int = TRUE, 
+                cor.coef = TRUE, cor.method = "pearson",
+                xlab = "Age", ylab = "Sleep Duration") 
+ggs
+
+
+
 ### RACE BY SLEEP QUALITY #####
+tableBad= table(obesitySleep$Race,obesitySleep$Bad)
+tableBad
+chisq.test(tableBad)
+
+tablegood= table(obesitySleep$Race,obesitySleep$Good)
+tablegood
+chisq.test(tablegood)
+
+tableOk= table(obesitySleep$Race,obesitySleep$OK)
+tableOk
+chisq.test(tableOk)
+
+
 
 
 ### RACE BY SLEEP DURATION ####
 
+sleepDuration=obesitySleep$SLEEP.DURATION
+raceCategory=obesitySleep$Race
+t.test(sleepDuration~raceCategory)
+
 
 ### SLEEP QUALITY BY SLEEP DURATION ####
 
+anova.sleepqualbad.dur <- aov(SLEEP.DURATION ~ Bad, data = obesitySleep)
+summary(anova.sleepqualbad.dur)
+plot(anova.sleepqualbad.dur, 1)
 
+anova.sleepqualgood.dur <- aov(SLEEP.DURATION ~ Good, data = obesitySleep)
+summary(anova.sleepqualgood.dur)
+plot(anova.sleepqualgood.dur, 1)
 
+anova.sleepqualok.dur <- aov(SLEEP.DURATION ~ OK, data = obesitySleep)
+summary(anova.sleepqualok.dur)
+plot(anova.sleepqualok.dur, 1)
+
+library(car)
+leveneTest(SLEEP.DURATION ~ Bad, data = obesitySleep)
+
+leveneTest(SLEEP.DURATION ~ Good, data = obesitySleep)
+
+leveneTest(SLEEP.DURATION ~ OK, data = obesitySleep)
 
 
 
