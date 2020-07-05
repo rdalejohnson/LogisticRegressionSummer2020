@@ -214,6 +214,7 @@ library(gmodels)
 library(MASS)
 with(obesitySleep, CrossTable(Obese, Race))
 
+#chiRaceObesity <- 
 chisq.test(table(obesitySleep$Obese, obesitySleep$Race))
 
 
@@ -336,7 +337,19 @@ leveneTest(SLEEP.DURATION ~ Good, data = obesitySleep)
 leveneTest(SLEEP.DURATION ~ OK, data = obesitySleep)
 
 
+#### Step 3:  Conduct Multiple Logistic Regression Analyses
 
+
+obesitySleep$Race = factor(obesitySleep$Race, levels=c("White, Non-Hispanic","Black, Non-Hispanic"))
+obesitySleep$Obese=factor(obesitySleep$Obese, levels = c("Obese","Not Obese"))
+
+Races=relevel(obesitySleep$Race, "White, Non-Hispanic")
+Obeses=relevel(obesitySleep$Obese,"Not Obese")
+mylogit = glm(Obese ~ Race + Age + SLEEP.DURATION + Bad + OK , data = obesitySleep, family = "binomial")
+
+
+
+summary(mylogit)
 
 
 
