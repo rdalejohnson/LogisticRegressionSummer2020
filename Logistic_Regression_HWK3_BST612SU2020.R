@@ -351,7 +351,10 @@ mylogit = glm(Obese ~ Race + Age + SLEEP.DURATION + Bad + OK , data = obesitySle
 
 summary(mylogit)
 
+require(MASS)
+exp(cbind(coef(mylogit), confint(mylogit)))  
 
+exp(coefficients(mylogit))
 
 
 # 
