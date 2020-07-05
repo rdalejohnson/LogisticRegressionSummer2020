@@ -124,23 +124,146 @@ sleepTab2 <- table(obesitySleep$SLEEP.QUALITY.RATING[obesitySleep$Obese=='Not Ob
 cbind(sleepTab2, prop.table(sleepTab2))
 
 
+############################################ SLEEP DURATION ###############################
+############################################ SLEEP DURATION ###############################
+############################################ SLEEP DURATION ###############################
+############################################ SLEEP DURATION ###############################
+
+
+summary(obesitySleep[,c(6)])
+sd(obesitySleep$SLEEP.DURATION, na.rm=TRUE)
+
+#MODE 
+tab <- table(obesitySleep$SLEEP.DURATION) # number of occurrences for each unique value
+sort(tab, decreasing = TRUE) # sort highest to lowest
+
+#Coefficient of Variation
+sd(obesitySleep$SLEEP.DURATION, na.rm=TRUE) / mean(obesitySleep$SLEEP.DURATION, na.rm=TRUE)
+#NORMALITY TESTS
+hist(obesitySleep$SLEEP.DURATION)
+sleepduration.boxplot <- boxplot(obesitySleep$SLEEP.DURATION)
+shapiro.test(obesitySleep$SLEEP.DURATION)
+qqnorm(obesitySleep$SLEEP.DURATION)
+qqline(obesitySleep$SLEEP.DURATION)
+
+
+
+
+##### BY OBESE CATEGORY #########
+by(obesitySleep[,c(6)], obesitySleep$Obese, summary)
+# NUMBER OF  VALUES BY OBESE CATEGORY ###
+by(obesitySleep[,c(6)], obesitySleep$Obese, length)
+
+
+#MODE  when Obese = NOT OBESE
+tab <- table(obesitySleep$SLEEP.DURATION[obesitySleep$Obese=='Not Obese'])   # number of occurrences for each unique value
+sort(tab, decreasing = TRUE) # sort highest to lowest
+
+#MODE  when Obese = OBESE
+tab <- table(obesitySleep$SLEEP.DURATION[obesitySleep$Obese=='Obese'])   # number of occurrences for each unique value
+sort(tab, decreasing = TRUE) # sort highest to lowest
+
+
+#SD/MEAN  when Obese = NOT OBESE
+with(obesitySleep, sd(SLEEP.DURATION[Obese=='Not Obese'],na.rm=TRUE))
+with(obesitySleep, mean(SLEEP.DURATION[Obese=='Not Obese'] , na.rm=TRUE))
+
+
+#SD/MEAN when Obese =  OBESE
+with(obesitySleep, sd(SLEEP.DURATION[Obese=='Obese'], na.rm=TRUE))
+with(obesitySleep, mean(SLEEP.DURATION[Obese=='Obese'], na.rm=TRUE))
+
+
+
+############################################ OBESITY CATEGORY ###############################
+############################################ OBESITY CATEGORY ###############################
+############################################ OBESITY CATEGORY ###############################
+############################################ OBESITY CATEGORY ###############################
+
+
+summary(obesitySleep[,c(11)])
+prop.table(table(obesitySleep$Obese))
+by(obesitySleep[,c(11)], obesitySleep$Obese, summary)
+
+
+
+###################### BIVARIATE ANALYSIS ################ ###################### BIVARIATE ANALYSIS ##############################
+###################### BIVARIATE ANALYSIS ################ ###################### BIVARIATE ANALYSIS ##############################
+###################### BIVARIATE ANALYSIS ################ ###################### BIVARIATE ANALYSIS ##############################
+###################### BIVARIATE ANALYSIS ################ ###################### BIVARIATE ANALYSIS ##############################
+
+
+##### Obesity Category by Age, Race, Sleep Quality, Sleep Duration
+
+############# OBESITY BY AGE ############## OBESITY BY AGE ##############
+Age=obesitySleep$Age
+obesityCategory=obesitySleep$Obese
+t.test(Age~obesityCategory)
+
+
+############# OBESITY BY SLEEP DURATION ############## OBESITY BY SLEEP DURATION ##############
+sleepDuration=obesitySleep$SLEEP.DURATION
+obesityCategory=obesitySleep$Obese
+t.test(sleepDuration~obesityCategory)
+
+
+
+############ OBESITY BY RACE ########################### OBESITY BY RACE ###################
+
+library(gmodels)
+library(MASS)
+with(obesitySleep, CrossTable(Obese, Race))
+
+chisq.test(table(obesitySleep$Obese, obesitySleep$Race))
+
+
+############ OBESITY BY SLEEP QUALITY ########################### OBESITY BY SLEEP QUALITY ###################
+
+with(obesitySleep, CrossTable(Obese, SLEEP.QUALITY.RATING))
+
+chisq.test(table(obesitySleep$Obese, obesitySleep$SLEEP.QUALITY.RATING))
+
+
+
+####### AGE BY RACE #########
+
+
+####### AGE BY SLEEP QUALITY ########
+
+
+#### AGE BY SLEEP DURATION ########
+
+
+### RACE BY SLEEP QUALITY #####
+
+
+### RACE BY SLEEP DURATION ####
+
+
+### SLEEP QUALITY BY SLEEP DURATION ####
 
 
 
 
 
-by(obesitySleep[,c(2,4,5,6,11)], obesitySleep$Obese, summary)
 
 
-summary(obesitySleep[,c(2,4,5,6,11)])
-
-lapply(obesitySleep[,c(2,6)], sd, na.rm=TRUE)
-
-lapply(obesitySleep[,c(2,6)], mean, na.rm=TRUE)
-lapply(obesitySleep[,c(2,6)], IQR, na.rm=TRUE)
 
 
-lapply(obesitySleep[,c(2,6)], sd, na.rm=TRUE)
+
+# 
+# by(obesitySleep[,c(2,4,5,6,11)], obesitySleep$Obese, summary)
+# 
+# 
+# summary(obesitySleep[,c(2,4,5,6,11)])
+# 
+# lapply(obesitySleep[,c(2,6)], sd, na.rm=TRUE)
+# 
+# lapply(obesitySleep[,c(2,6)], mean, na.rm=TRUE)
+# lapply(obesitySleep[,c(2,6)], IQR, na.rm=TRUE)
+# 
+# 
+# lapply(obesitySleep[,c(2,6)], sd, na.rm=TRUE)
 
 
 # coefficient.of.variation.age <- sd(obesitySleep$Age, na.rm=TRUE) / mean(obesitySleep$Age, na.rm=TRUE)
@@ -161,18 +284,18 @@ lapply(obesitySleep[,c(2,6)], sd, na.rm=TRUE)
 
 
 
-coefficient.of.variation.sleepduration <- sd(obesitySleep$SLEEP.DURATION, na.rm=TRUE) / mean(obesitySleep$SLEEP.DURATION, na.rm=TRUE)
-hist(obesitySleep$SLEEP.DURATION)
-
-sleepdur.boxplot <- ggplot(obesitySleep) +
-  aes(x = Obese, y = SLEEP.DURATION) +
-  geom_boxplot()
-
-sleepdur.boxplot
-
-qqnorm(obesitySleep$SLEEP.DURATION)
-# Draw the reference line:
-qqline(obesitySleep$SLEEP.DURATION)
+# coefficient.of.variation.sleepduration <- sd(obesitySleep$SLEEP.DURATION, na.rm=TRUE) / mean(obesitySleep$SLEEP.DURATION, na.rm=TRUE)
+# hist(obesitySleep$SLEEP.DURATION)
+# 
+# sleepdur.boxplot <- ggplot(obesitySleep) +
+#   aes(x = Obese, y = SLEEP.DURATION) +
+#   geom_boxplot()
+# 
+# sleepdur.boxplot
+# 
+# qqnorm(obesitySleep$SLEEP.DURATION)
+# # Draw the reference line:
+# qqline(obesitySleep$SLEEP.DURATION)
 
 
 
