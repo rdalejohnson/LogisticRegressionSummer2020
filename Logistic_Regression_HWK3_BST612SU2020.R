@@ -375,6 +375,8 @@ regTermTest(mylogit, "OK")
 library(caret)
 varImp(mylogit)
 
+library(ResourceSelection)
+hoslem.test(mylogit$y, fitted(mylogit), g=10)
 
 
 
