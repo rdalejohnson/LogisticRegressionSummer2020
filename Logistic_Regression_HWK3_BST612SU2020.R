@@ -351,6 +351,31 @@ mylogit = glm(Obese ~ Race + Age + SLEEP.DURATION + Bad + OK , data = obesitySle
 
 summary(mylogit)
 
+# As a rule of thumb, a VIF value that exceeds 5  indicates a 
+# problematic amount of collinearity. 
+# http://www.sthda.com/english/articles/36-classification-methods-essentials/148-logistic-regression-assumptions-and-diagnostics-in-r/#multicollinearity-logistic-regression
+car::vif(mylogit)
+
+#A wald test is used to evaluate the statistical significance of each 
+#coefficient in the model and is calculated by taking the ratio of the 
+#square of the regression coefficient to the square of the standard error 
+#of the coefficient. The idea is to test the hypothesis that the 
+#coefficient of an independent variable in the model is significantly 
+#different from zero. If the test fails to reject the null hypothesis, 
+#this suggests that removing the variable from the model will 
+#not substantially harm the fit of that model.
+# https://www.r-bloggers.com/evaluating-logistic-regression-models/
+
+regTermTest(mylogit, "Race")
+regTermTest(mylogit, "Age")
+regTermTest(mylogit, "SLEEP.DURATION")
+regTermTest(mylogit, "Bad")
+regTermTest(mylogit, "OK")
+
+library(caret)
+varImp(mylogit)
+
+
 
 
 require(MASS)
