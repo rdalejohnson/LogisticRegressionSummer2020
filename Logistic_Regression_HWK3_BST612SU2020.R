@@ -351,12 +351,30 @@ mylogit = glm(Obese ~ Race + Age + SLEEP.DURATION + Bad + OK , data = obesitySle
 
 summary(mylogit)
 
+
+
 require(MASS)
 exp(cbind(coef(mylogit), confint(mylogit)))  
 
 exp(coefficients(mylogit))
 
 
+predict(mylogit, newdata=data.frame(Race=c('Black, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(5), Bad=('OK/Good'), OK=('OK')  ), type="response")
+exponentOfe <- 1.14563 + (-0.90577*1) + (-0.01510*45) + (0.09677*5) + (0.05401*0) + (-0.07805*1)
+probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
+
+probability.example
+
+
+predict(mylogit, newdata=data.frame(Race=c('White, Non-Hispanic'), Age=c(35), SLEEP.DURATION=c(9), Bad=('Bad'), OK=('Bad/Good')  ), type="response")
+
+exponentOfe <- 1.14563 + (-0.90577*0) + (-0.01510*35) + (0.09677*9) + (0.05401*1) + (-0.07805*0)
+probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
+
+probability.example
+
+
+data.frame(Race=c('White, Non-Hispanic'), Age=c(35), SLEEP.DURATION=c(9), Bad=('Bad'), OK=('Bad/Good')  )
 # 
 # by(obesitySleep[,c(2,4,5,6,11)], obesitySleep$Obese, summary)
 # 
