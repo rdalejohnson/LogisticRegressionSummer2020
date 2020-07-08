@@ -181,3 +181,9 @@ mylogit = glm(Aldo ~ Sex + Race + Age, data = lab, family = "binomial")
 
 summary(mylogit)
 
+
+require(MASS)
+exp(cbind(coef(mylogit), confint(mylogit)))  
+
+
+

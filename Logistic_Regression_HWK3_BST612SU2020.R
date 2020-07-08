@@ -376,8 +376,13 @@ library(caret)
 varImp(mylogit)
 
 library(ResourceSelection)
-hoslem.test(mylogit$y, fitted(mylogit), g=10)
+hoslem.output <- hoslem.test(mylogit$y, fitted(mylogit), g=10)
 
+#NONsignificant result means model fits well
+
+hoslem.output
+
+cbind(hoslem.output$observed,hoslem.output$expected)
 
 
 require(MASS)
