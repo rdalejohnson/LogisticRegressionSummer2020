@@ -384,12 +384,29 @@ hoslem.output
 
 cbind(hoslem.output$observed,hoslem.output$expected)
 
+#Cox and Snell, Nagelkerge, McFadden outputs:
+library(rcompanion)
+nagelkerke(mylogit, null=NULL)
 
+###### significance of the overall model
+with (mylogit, null.deviance - deviance)
+with (mylogit, df.null - df.residual)
+with (mylogit, pchisq(null.deviance - deviance, 
+                      df.null - df.residual,
+                      lower.tail = FALSE))
+
+
+
+# Get the AOR and the CI on the AOR with this
 require(MASS)
 exp(cbind(coef(mylogit), confint(mylogit)))  
 
 exp(coefficients(mylogit))
 
+# percentage correctly classified ????
+
+probabilities <- predict(mylogit, type = "response")
+1 - mean(abs(probabilities - mylogit[["y"]]))
 
 predict(mylogit, newdata=data.frame(Race=c('Black, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(5), Bad=('OK/Good'), OK=('OK')  ), type="response")
 exponentOfe <- 1.14563 + (-0.90577*1) + (-0.01510*45) + (0.09677*5) + (0.05401*0) + (-0.07805*1)

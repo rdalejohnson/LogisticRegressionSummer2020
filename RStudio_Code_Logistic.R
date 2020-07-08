@@ -185,5 +185,7 @@ summary(mylogit)
 require(MASS)
 exp(cbind(coef(mylogit), confint(mylogit)))  
 
+library(rcompanion)
+nagelkerke(mylogit, null=NULL)
 
 
