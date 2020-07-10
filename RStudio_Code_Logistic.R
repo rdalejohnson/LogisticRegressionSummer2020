@@ -177,9 +177,14 @@ Race=relevel(lab$Race, "White")
 Aldo=relevel(lab$`Aldo level`,"Normal")
 mylogit = glm(Aldo ~ Sex + Race + Age, data = lab, family = "binomial")
 
-
+mylogit
 
 summary(mylogit)
+
+#significant compared to NULL model:
+1 - pchisq(277.07-245.97, df=231-228)
+
+anova(mylogit, test="Chisq")
 
 
 require(MASS)
@@ -189,3 +194,11 @@ library(rcompanion)
 nagelkerke(mylogit, null=NULL)
 
 
+
+# percentage correctly classified ????
+
+probabilities <- predict(mylogit, type = "response")
+1 - mean(abs(probabilities - mylogit[["y"]]))
+
+
+table(probabilities>.5, mylogit[["y"]])
