@@ -175,6 +175,32 @@ with(obesitySleep, mean(SLEEP.DURATION[Obese=='Obese'], na.rm=TRUE))
 
 
 
+###### BMI ALONE ######## BMI ALONE ##############  BMI ALONE ##############
+###### BMI ALONE ######## BMI ALONE ##############  BMI ALONE ##############
+###### BMI ALONE ######## BMI ALONE ##############  BMI ALONE ##############
+###### BMI ALONE ######## BMI ALONE ##############  BMI ALONE ##############
+
+
+summary(obesitySleep$BMI)
+sd(obesitySleep$BMI)
+
+#Coefficient of Variation
+sd(obesitySleep$BMI, na.rm=TRUE) / mean(obesitySleep$BMI, na.rm=TRUE)
+#NORMALITY TESTS ON BMI
+hist(obesitySleep$BMI)
+bmi.boxplot <- boxplot(obesitySleep$BMI)
+shapiro.test(obesitySleep$BMI)
+qqnorm(obesitySleep$BMI)
+qqline(obesitySleep$BMI)
+
+nrow(obesitySleep[obesitySleep$BMI>=30, ])
+nrow(obesitySleep[obesitySleep$BMI<30, ])
+
+
+
+
+
+
 ############################################ OBESITY CATEGORY ###############################
 ############################################ OBESITY CATEGORY ###############################
 ############################################ OBESITY CATEGORY ###############################
