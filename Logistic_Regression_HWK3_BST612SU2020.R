@@ -377,11 +377,14 @@ mylogit = glm(Obese ~ Race + Age + SLEEP.DURATION + Bad + OK , data = obesitySle
 
 summary(mylogit)
 
+#1 - pcshiq(null deviance - residual deviance, null deviance df - residual deviance df)
+1 - pchisq(4343.8-4167.2, df=3444-3439)
+
 
 #comparing full to null model?
 null.model <- glm(Obese~1, data = obesitySleep, family = "binomial")
 summary(null.model)
-anova(null.model, mylogit, test="Chisq");
+anova(null.model, mylogit, test="Chisq")
 
 # As a rule of thumb, a VIF value that exceeds 5  indicates a 
 # problematic amount of collinearity. 
@@ -410,17 +413,34 @@ varImp(mylogit)
 library(ResourceSelection)
 hoslem.output <- hoslem.test(mylogit$y, fitted(mylogit), g=10)
 
+#library(MKmisc)
+#HLgof.test(fit = fitted(mylogit), obs = obesitySleep$Obese)
+
 #NONsignificant result means model fits well
 
 hoslem.output
 
-cbind(hoslem.output$observed,hoslem.output$expected)
+cbind(hoslem.output$expected,hoslem.output$observed)
 
 #Cox and Snell, Nagelkerge, McFadden outputs:
 library(rcompanion)
-nagelkerke(mylogit, null=NULL)
+nagelkerke(mylogit)
+
+
+require(rms)
+mod1b <- lrm(Obese ~ Race + Age + SLEEP.DURATION + Bad + OK, data = obesitySleep)
 
 ###### significance of the overall model
+
+library(lmtest)
+
+lrtest(mylogit)
+
+# anova(mylogit,
+#       update(mylogit, ~1),    # update here produces null model for comparison
+#       test="Chisq")
+
+
 with (mylogit, null.deviance - deviance)
 with (mylogit, df.null - df.residual)
 with (mylogit, pchisq(null.deviance - deviance, 
@@ -506,7 +526,6 @@ data.frame(Race=c('White, Non-Hispanic'), Age=c(35), SLEEP.DURATION=c(9), Bad=('
 # qqnorm(obesitySleep$SLEEP.DURATION)
 # # Draw the reference line:
 # qqline(obesitySleep$SLEEP.DURATION)
-
 
 
 

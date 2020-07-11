@@ -182,6 +182,7 @@ mylogit
 summary(mylogit)
 
 #significant compared to NULL model:
+#1 - pcshiq(null deviance - residual deviance, null deviance df - residual deviance df)
 1 - pchisq(277.07-245.97, df=231-228)
 
 ####nova(mylogit, test="Chisq")
@@ -198,6 +199,14 @@ exp(cbind(coef(mylogit), confint(mylogit)))
 library(rcompanion)
 nagelkerke(mylogit, null=NULL)
 
+library(ResourceSelection)
+hoslem.output <- hoslem.test(mylogit$y, fitted(mylogit), g=10)
+
+#NONsignificant result means model fits well
+
+hoslem.output
+
+cbind(hoslem.output$observed,hoslem.output$expected)
 
 
 # percentage correctly classified ????
