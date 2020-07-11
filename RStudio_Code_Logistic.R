@@ -184,7 +184,12 @@ summary(mylogit)
 #significant compared to NULL model:
 1 - pchisq(277.07-245.97, df=231-228)
 
-anova(mylogit, test="Chisq")
+####nova(mylogit, test="Chisq")
+
+null.model <- glm(Aldo~1, data = lab, family = "binomial")
+                  
+                  
+anova(null.model, mylogit, test="Chisq");
 
 
 require(MASS)

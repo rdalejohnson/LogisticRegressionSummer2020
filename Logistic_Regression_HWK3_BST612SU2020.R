@@ -377,6 +377,12 @@ mylogit = glm(Obese ~ Race + Age + SLEEP.DURATION + Bad + OK , data = obesitySle
 
 summary(mylogit)
 
+
+#comparing full to null model?
+null.model <- glm(Obese~1, data = obesitySleep, family = "binomial")
+summary(null.model)
+anova(null.model, mylogit, test="Chisq");
+
 # As a rule of thumb, a VIF value that exceeds 5  indicates a 
 # problematic amount of collinearity. 
 # http://www.sthda.com/english/articles/36-classification-methods-essentials/148-logistic-regression-assumptions-and-diagnostics-in-r/#multicollinearity-logistic-regression
