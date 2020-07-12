@@ -367,11 +367,16 @@ leveneTest(SLEEP.DURATION ~ OK, data = obesitySleep)
 
 
 obesitySleep$Race = factor(obesitySleep$Race, levels=c("White, Non-Hispanic","Black, Non-Hispanic"))
+
+#as.integer(obesitySleep$Race)
+#obesitySleep$Race
+
 obesitySleep$Obese=factor(obesitySleep$Obese, levels = c("Obese","Not Obese"))
 
 Races=relevel(obesitySleep$Race, "White, Non-Hispanic")
 Obeses=relevel(obesitySleep$Obese,"Not Obese")
-mylogit = glm(Obese ~ Race + Age + SLEEP.DURATION + Bad + OK , data = obesitySleep, family = "binomial")
+
+mylogit = glm(Obese ~ SLEEP.DURATION + Age +  Race + Bad + OK , data = obesitySleep, family = "binomial")
 
 
 
@@ -462,6 +467,12 @@ probabilities <- predict(mylogit, type = "response")
 
 table(probabilities>.5, mylogit[["y"]])
 
+#Jiaying Hao email:
+#This is the Confusion Matrix; 
+#to get percentage correctly classified, use the following formulae: (TRUE POSITIVES + TRUE NEGATIVES) / Total.
+
+percentageCorrectlyClassified <- ((2286+37)/(77+1082+2286))*100
+percentageCorrectlyClassified
 
 ##### predict and specific scenarios
 
@@ -471,6 +482,7 @@ probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
 
 probability.example
 
+#### 
 
 predict(mylogit, newdata=data.frame(Race=c('White, Non-Hispanic'), Age=c(35), SLEEP.DURATION=c(9), Bad=('Bad'), OK=('Bad/Good')  ), type="response")
 
@@ -479,8 +491,48 @@ probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
 
 probability.example
 
+###########################
 
-data.frame(Race=c('White, Non-Hispanic'), Age=c(35), SLEEP.DURATION=c(9), Bad=('Bad'), OK=('Bad/Good')  )
+# same scenario with only race changing
+
+predict(mylogit, newdata=data.frame(Race=c('Black, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(5), Bad=('OK/Good'), OK=('OK')  ), type="response")
+exponentOfe <- 1.14563 + (-0.90577*1) + (-0.01510*45) + (0.09677*5) + (0.05401*0) + (-0.07805*1)
+probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
+
+probability.example
+
+
+predict(mylogit, newdata=data.frame(Race=c('White, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(5), Bad=('OK/Good'), OK=('OK')  ), type="response")
+exponentOfe <- 1.14563 + (-0.90577*0) + (-0.01510*45) + (0.09677*5) + (0.05401*0) + (-0.07805*1)
+probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
+
+probability.example
+
+
+# same scenario with only sleep duration
+
+predict(mylogit, newdata=data.frame(Race=c('Black, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(8), Bad=('OK/Good'), OK=('OK')  ), type="response")
+exponentOfe <- 1.14563 + (-0.90577*1) + (-0.01510*45) + (0.09677*8) + (0.05401*0) + (-0.07805*1)
+probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
+
+probability.example
+
+
+predict(mylogit, newdata=data.frame(Race=c('White, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(8), Bad=('OK/Good'), OK=('OK')  ), type="response")
+exponentOfe <- 1.14563 + (-0.90577*0) + (-0.01510*45) + (0.09677*8) + (0.05401*0) + (-0.07805*1)
+probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
+
+probability.example
+
+
+predict(mylogit, newdata=data.frame(Race=c('White, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(5), Bad=('OK/Good'), OK=('OK')  ), type="response")
+exponentOfe <- 1.14563 + (-0.90577*0) + (-0.01510*45) + (0.09677*5) + (0.05401*0) + (-0.07805*1)
+probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
+
+probability.example
+
+
+
 # 
 # by(obesitySleep[,c(2,4,5,6,11)], obesitySleep$Obese, summary)
 # 
