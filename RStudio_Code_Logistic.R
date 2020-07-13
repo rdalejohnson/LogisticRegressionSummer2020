@@ -172,12 +172,17 @@ t.test(Age~Race)
 lab$Sex= factor(lab$Sex, levels=c("Female","Male"))
 lab$Race = factor(lab$Race, levels=c("White","African American"))
 lab$`Aldo level`=factor(lab$`Aldo level`, levels = c("High","Normal"))
-Sex=relevel(lab$Sex, "Female")
-Race=relevel(lab$Race, "White")
-Aldo=relevel(lab$`Aldo level`,"Normal")
+Sexs=relevel(lab$Sex, "Female")
+Races=relevel(lab$Race, "White")
+Aldos=relevel(lab$`Aldo level`,"Normal")
 mylogit = glm(Aldo ~ Sex + Race + Age, data = lab, family = "binomial")
+summary(mylogit)
 
-mylogit
+mylogit2 = glm(Aldos ~ Sexs + Races + Age, data = lab, family = "binomial")
+summary(mylogit2)
+
+
+#mylogit
 
 summary(mylogit)
 

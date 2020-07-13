@@ -363,20 +363,26 @@ leveneTest(SLEEP.DURATION ~ Good, data = obesitySleep)
 leveneTest(SLEEP.DURATION ~ OK, data = obesitySleep)
 
 
-#### Step 3:  Conduct Multiple Logistic Regression Analyses
+#################### Step 3:  Conduct Multiple Logistic Regression Analyses #####################################
+#################### Step 3:  Conduct Multiple Logistic Regression Analyses #####################################
+#################### Step 3:  Conduct Multiple Logistic Regression Analyses #####################################
+#################### Step 3:  Conduct Multiple Logistic Regression Analyses #####################################
+#################### Step 3:  Conduct Multiple Logistic Regression Analyses #####################################
 
 
 obesitySleep$Race = factor(obesitySleep$Race, levels=c("White, Non-Hispanic","Black, Non-Hispanic"))
 
-#as.integer(obesitySleep$Race)
-#obesitySleep$Race
-
 obesitySleep$Obese=factor(obesitySleep$Obese, levels = c("Obese","Not Obese"))
+
+#obesitySleep$Bad=factor(obesitySleep$Obese, levels = c("OK/Good","Bad"))
 
 Races=relevel(obesitySleep$Race, "White, Non-Hispanic")
 Obeses=relevel(obesitySleep$Obese,"Not Obese")
+Bads = relevel(obesitySleep$Bad,"OK/Good")
+OKs = relevel(obesitySleep$OK,"Bad/Good")
 
-mylogit = glm(Obese ~ SLEEP.DURATION + Age +  Race + Bad + OK , data = obesitySleep, family = "binomial")
+
+mylogit = glm(Obeses ~ SLEEP.DURATION + Age +  Races + Bads + OKs , data = obesitySleep, family = "binomial")
 
 
 
@@ -387,7 +393,7 @@ summary(mylogit)
 
 
 #comparing full to null model?
-null.model <- glm(Obese~1, data = obesitySleep, family = "binomial")
+null.model <- glm(Obeses~1, data = obesitySleep, family = "binomial")
 summary(null.model)
 anova(null.model, mylogit, test="Chisq")
 
@@ -476,61 +482,92 @@ percentageCorrectlyClassified
 
 ##### predict and specific scenarios
 
-predict(mylogit, newdata=data.frame(Race=c('Black, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(5), Bad=('OK/Good'), OK=('OK')  ), type="response")
-exponentOfe <- 1.14563 + (-0.90577*1) + (-0.01510*45) + (0.09677*5) + (0.05401*0) + (-0.07805*1)
-probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
+sleep.duration.coeff = -0.09677
+age.coeff = 0.01510
+race.coeff = 0.90577
+bad.coeff = 0.05401
+ok.coeff = 0.07805
+intercept.coeff = -1.19964
 
+predict(mylogit, newdata=data.frame(Races=c('Black, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(5), Bads=('OK/Good'), OKs=('OK')  ), type="response")
+
+exponentOfe <- intercept.coeff + (race.coeff*1) + (age.coeff*45) + (sleep.duration.coeff*5) + (bad.coeff*0) + (ok.coeff*1)
+exponentOfe <- -1.19964 + (0.90577*1) + (0.01510*45) + (-0.09677*5) + (0.05401*0) + (0.07805*1)
+
+exponentOfe
+probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
 probability.example
 
 #### 
 
-predict(mylogit, newdata=data.frame(Race=c('White, Non-Hispanic'), Age=c(35), SLEEP.DURATION=c(9), Bad=('Bad'), OK=('Bad/Good')  ), type="response")
+predict(mylogit, newdata=data.frame(Races=c('White, Non-Hispanic'), Age=c(35), SLEEP.DURATION=c(9), Bads=('Bad'), OKs=('Bad/Good')  ), type="response")
 
-exponentOfe <- 1.14563 + (-0.90577*0) + (-0.01510*35) + (0.09677*9) + (0.05401*1) + (-0.07805*0)
+exponentOfe <- intercept.coeff + (race.coeff*0) + (age.coeff*35) + (sleep.duration.coeff*9) + (bad.coeff*1) + (ok.coeff*0)
+
+exponentOfe
+
+
+
+
 probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
-
-probability.example
-
-###########################
-
-# same scenario with only race changing
-
-predict(mylogit, newdata=data.frame(Race=c('Black, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(5), Bad=('OK/Good'), OK=('OK')  ), type="response")
-exponentOfe <- 1.14563 + (-0.90577*1) + (-0.01510*45) + (0.09677*5) + (0.05401*0) + (-0.07805*1)
-probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
-
 probability.example
 
 
-predict(mylogit, newdata=data.frame(Race=c('White, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(5), Bad=('OK/Good'), OK=('OK')  ), type="response")
-exponentOfe <- 1.14563 + (-0.90577*0) + (-0.01510*45) + (0.09677*5) + (0.05401*0) + (-0.07805*1)
-probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
 
+predict(mylogit, newdata=data.frame(Races=c('Black, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(5), Bads=('OK/Good'), OKs=('OK')  ), type="response")
+
+exponentOfe <- intercept.coeff + (race.coeff*1) + (age.coeff*45) + (sleep.duration.coeff*5) + (bad.coeff*0) + (ok.coeff*1)
+probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
+probability.example
+
+predict(mylogit, newdata=data.frame(Races=c('White, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(5), Bads=('OK/Good'), OKs=('OK')  ), type="response")
+
+exponentOfe <- intercept.coeff + (race.coeff*0) + (age.coeff*45) + (sleep.duration.coeff*5) + (bad.coeff*0) + (ok.coeff*1)
+probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
 probability.example
 
 
-# same scenario with only sleep duration
 
-predict(mylogit, newdata=data.frame(Race=c('Black, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(8), Bad=('OK/Good'), OK=('OK')  ), type="response")
-exponentOfe <- 1.14563 + (-0.90577*1) + (-0.01510*45) + (0.09677*8) + (0.05401*0) + (-0.07805*1)
-probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
-
-probability.example
-
-
-predict(mylogit, newdata=data.frame(Race=c('White, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(8), Bad=('OK/Good'), OK=('OK')  ), type="response")
-exponentOfe <- 1.14563 + (-0.90577*0) + (-0.01510*45) + (0.09677*8) + (0.05401*0) + (-0.07805*1)
-probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
-
-probability.example
-
-
-predict(mylogit, newdata=data.frame(Race=c('White, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(5), Bad=('OK/Good'), OK=('OK')  ), type="response")
-exponentOfe <- 1.14563 + (-0.90577*0) + (-0.01510*45) + (0.09677*5) + (0.05401*0) + (-0.07805*1)
-probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
-
-probability.example
-
+# ###########################
+# 
+# # same scenario with only race changing
+# 
+# predict(mylogit, newdata=data.frame(Races=c('Black, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(5), Bads=('OK/Good'), OKs=('OK')  ), type="response")
+# exponentOfe <- 1.14563 + (-0.90577*1) + (-0.01510*45) + (0.09677*5) + (0.05401*0) + (-0.07805*1)
+# probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
+# 
+# probability.example
+# 
+# 
+# predict(mylogit, newdata=data.frame(Races=c('White, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(5), Bads=('OK/Good'), OKs=('OK')  ), type="response")
+# exponentOfe <- 1.14563 + (-0.90577*0) + (-0.01510*45) + (0.09677*5) + (0.05401*0) + (-0.07805*1)
+# probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
+# 
+# probability.example
+# 
+# 
+# # same scenario with only sleep duration
+# 
+# predict(mylogit, newdata=data.frame(Races=c('Black, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(8), Bads=('OK/Good'), OKs=('OK')  ), type="response")
+# exponentOfe <- 1.14563 + (-0.90577*1) + (-0.01510*45) + (0.09677*8) + (0.05401*0) + (-0.07805*1)
+# probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
+# 
+# probability.example
+# 
+# 
+# predict(mylogit, newdata=data.frame(Races=c('White, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(8), Bads=('OK/Good'), OKs=('OK')  ), type="response")
+# exponentOfe <- 1.14563 + (-0.90577*0) + (-0.01510*45) + (0.09677*8) + (0.05401*0) + (-0.07805*1)
+# probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
+# 
+# probability.example
+# 
+# 
+# predict(mylogit, newdata=data.frame(Race=c('White, Non-Hispanic'), Age=c(45), SLEEP.DURATION=c(5), Bad=('OK/Good'), OK=('OK')  ), type="response")
+# exponentOfe <- 1.14563 + (-0.90577*0) + (-0.01510*45) + (0.09677*5) + (0.05401*0) + (-0.07805*1)
+# probability.example <- exp(exponentOfe)/(1+exp(exponentOfe))
+# 
+# probability.example
+# 
 
 
 # 
